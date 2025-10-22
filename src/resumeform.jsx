@@ -1,16 +1,13 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ResumeForm = () => {
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [alldata, setAlldata] = useState({firstname: "", lastname: "", jobtitle: "", companyname:"",email:"",phonenumber:"",aisummary:""});
     const navigator = useNavigate();
     const handleprevious = () => {
         navigator('/');
-    };
-    const handlesave = () => {
-      navigator('/resumeresult', {state: {alldata: alldata}});
     };
 
   const handleUpload = async () => {
@@ -24,6 +21,7 @@ const ResumeForm = () => {
     formData.append("resume", file);
 
     try {
+      setLoading(true);
       console.log('loading');
       // const res = await axios.post(
       //   "http://localhost:5000/api/resume/upload",
@@ -42,10 +40,24 @@ const ResumeForm = () => {
       const data = await res.json();
 
       console.log("Upload successful:", res);
-      console.log("Response:", res.json());
       console.log("message", data.message);
       console.log("filename", data.fileName);
       console.log("aiSummary", data.aiSummary);
+      // let aiSummaryObject;
+      // if (typeof data.aiSummary === "string") {
+      //   try {
+      //     aiSummaryObject = JSON.parse(data.aiSummary);
+      //   } catch {
+      //     aiSummaryObject = data.aiSummary; // fallback if not valid JSON
+      //   }
+      // } else {
+      //   aiSummaryObject = data.aiSummary;
+      // }
+          console.log("Parsed aiSummary:", data.aiSummary);
+          console.log("Score:", data.aiSummary.score);
+          console.log("Skills:", data.aiSummary.skills);
+          console.log("Strengths:", data.aiSummary.strengths);
+
       const newData = { ...alldata, aisummary: data.aiSummary };
       setAlldata(newData);
       console.log(newData);
@@ -55,6 +67,7 @@ const ResumeForm = () => {
       alert("Upload failed. Check console for details.");
     } finally {
       console.log('loading done');
+      setLoading(false);
     }
   };
   return (
@@ -256,6 +269,20 @@ const ResumeForm = () => {
         </button>
       </div>
       </div>
+      {
+        loading && <div className="loadingbg fixed h-full w-full inset-0 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
+            <div id="loadingpage">
+              <div id="loadingcontainer">
+                  <div id="loadingring"></div>
+                  <div id="loadingring"></div>
+                  <div id="loadingring"></div>
+                  <div id="loadingring"></div>
+                  <div id="loadingh3">Generating</div>
+              </div>
+            </div>
+          </div>
+          
+      }
     </div>
   );
 };
