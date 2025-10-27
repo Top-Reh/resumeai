@@ -55,6 +55,23 @@ const Resumesingle = () => {
         }
         };
 
+    const downloadResume = async (id) => {
+      const res = await fetch(`http://localhost:5000/api/resume/download/${id}`);
+      if (!res.ok) return alert("Download failed");
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "resume.pdf";
+      link.click();
+      link.remove();
+    };
+
+    const handleSave = () => {
+      navigator('/');
+    }
+
   return (
     <section className='w-full flex justify-center items-center align-middle py-10 px-20 flex-col gap-10'>
           <a href='/' className='w-3/4 top-10 rounded-full bg-white flex justify-center align-middle items-center py-2 px-4 '>
@@ -62,12 +79,13 @@ const Resumesingle = () => {
           </a>
             <div className={`w-full border-2 border-gray-300 rounded-lg shadow-lg p-10 bg-white flex flex-col justify-start gap-5`}>
                   <div className='flex justify-between items-center'>
-                    <div className='flex align-middle justify-start items-center gap-5 w-full'> 
+                    <div className='flex align-top justify-start items-start gap-5 w-full'> 
                       <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpd4mJRIUwqgE8D_Z2znANEbtiz4GhI4M8NQ&s' alt='userpfp' className={`rounded-full w-20 border-4 ${data.aisummary.score > 75 ? "border-green-300" : data.aisummary.score < 40 ?"border-red-300":"border-orange-300"} p-2`}></img>
                       <div>
                         <h1 className='text-2xl font-bold text-black'>{data.firstname} {data.lastname}</h1>
                         <p className='text-gray-600'>{data.jobtitle}</p>
                       </div>
+                      <button onClick={() => downloadResume(data._id)} className='text-green-500 p-3 cursor-pointer'>Download Resume</button>
                     </div>
                     <div className='w-1/2 items-end justify-end flex '>
                       <ScoreCircle score={data.aisummary.score} />
@@ -101,6 +119,7 @@ const Resumesingle = () => {
                   </div>
                   <div className='w-full flex justify-end items-center mt-10 gap-10'>
                     <button className=' text-red-400 border-red-400 border py-3 rounded-full font-bold cursor-pointer px-16' onClick={handleRemove}>Remove</button>
+                    <button className='bg-blue-500 text-white py-3 rounded-full font-bold cursor-pointer px-20' onClick={handleSave}>Save</button>
                   </div>
             </div>
             

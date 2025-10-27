@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ResumeForm = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [alldata, setAlldata] = useState({firstname: "", lastname: "", jobtitle: "",email:"",phonenumber:"",aisummary:"",pdffile:[]});
+  const [alldata, setAlldata] = useState({firstname: "", lastname: "", jobtitle: "",email:"",phonenumber:"",aisummary:"",pdffile:null});
     const navigator = useNavigate();
     const handleprevious = () => {
         navigator('/');
     };
+
+    useEffect(() => {
+      console.log('Alldata updated:', alldata);
+    }, [alldata]);
 
   const handleUpload = async () => {
     if (!file) {
@@ -59,7 +63,7 @@ const ResumeForm = () => {
           console.log("Skills:", data.aiSummary.skills);
           console.log("Strengths:", data.aiSummary.strengths);
 
-      const newData = { ...alldata, aisummary: data.aiSummary };
+      const newData = { ...alldata, aisummary: data.aiSummary, pdffile: data.pdffilebuffer };
       setAlldata(newData);
       console.log(newData);
       navigator('/resumeresult', { state: { alldata: newData } });
@@ -85,7 +89,7 @@ const ResumeForm = () => {
         <InputField id="phone" label="Phone" placeholder="Phone" type="phone" value={alldata.phonenumber} onChange={e=>setAlldata({...alldata,phonenumber:e.target.value})}/>
       </div>
       <div className='bg-white py-3 flex align-middle justify-center rounded-[8px] w-full'>
-        <input type="file" id="fileInput" className='text-black' onChange={(e) => setFile(e.target.files[0])} />
+        <input type="file" id="fileInput" className='text-black' onChange={(e) => {{setFile(e.target.files[0])};setAlldata({...alldata,pdffile:e.target.files[0]})}} />
       </div>
       <div className='w-full flex justify-between align-middle'>
         <button
