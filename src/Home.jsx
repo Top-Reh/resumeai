@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     async function loadResumes() {
       try {
-        const res = await fetch("http://localhost:5000/api/resume");
+        const res = await fetch("https://resumeaibackend-pvvh.onrender.com/api/resume");
         if (!res.ok) throw new Error("Failed to fetch resumes");
         const data = await res.json();
         setResumesdata(data);

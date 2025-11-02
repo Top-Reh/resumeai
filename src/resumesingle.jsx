@@ -12,7 +12,7 @@ const Resumesingle = () => {
     useEffect(() => {
         async function fetchResume() {
             try {
-                const res = await fetch(`http://localhost:5000/api/resume/${resumeId}`);
+                const res = await fetch(`https://resumeaibackend-pvvh.onrender.com/api/resume/${resumeId}`);
                 if (!res.ok) throw new Error("Failed to fetch resume");
                 const fetchedData = await res.json();
                 setData(fetchedData);
@@ -35,7 +35,7 @@ const Resumesingle = () => {
         }
         if (window.confirm("Are you sure you want to delete this resume?")) {
           try {
-            const res = await fetch(`http://localhost:5000/api/resume/delete/${data._id}`, {
+            const res = await fetch(`https://resumeaibackend-pvvh.onrender.com/api/resume/delete/${data._id}`, {
               method: "DELETE",
             });
             if (!res.ok) {
@@ -56,7 +56,7 @@ const Resumesingle = () => {
         };
 
     const downloadResume = async (id) => {
-      const res = await fetch(`http://localhost:5000/api/resume/download/${id}`);
+      const res = await fetch(`https://resumeaibackend-pvvh.onrender.com/api/resume/download/${id}`);
       if (!res.ok) return alert("Download failed");
 
       const blob = await res.blob();

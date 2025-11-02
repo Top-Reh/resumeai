@@ -20,7 +20,7 @@ const Resumeresult = () => {
 
     if (window.confirm("Save this result?")) {
       try {
-        const res = await fetch("http://localhost:5000/api/resume/save", {
+        const res = await fetch("https://resumeaibackend-pvvh.onrender.com/api/resume/save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

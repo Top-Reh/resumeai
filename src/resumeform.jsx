@@ -28,16 +28,8 @@ const ResumeForm = () => {
     try {
       setLoading(true);
       console.log('loading');
-      // const res = await axios.post(
-      //   "http://localhost:5000/api/resume/upload",
-      //   formData,
-      //   {
-      //     // DO NOT set Content-Type here; let the browser include the boundary.
-      //     // headers: { "Content-Type": "multipart/form-data" },
-      //   }
-      // );
 
-      const res = await fetch("http://localhost:5000/api/resume/upload", {
+      const res = await fetch("https://resumeaibackend-pvvh.onrender.com/api/resume/upload", {
         method: "POST",
         body: formData,
       });
@@ -48,20 +40,10 @@ const ResumeForm = () => {
       console.log("message", data.message);
       console.log("filename", data.fileName);
       console.log("aiSummary", data.aiSummary);
-      // let aiSummaryObject;
-      // if (typeof data.aiSummary === "string") {
-      //   try {
-      //     aiSummaryObject = JSON.parse(data.aiSummary);
-      //   } catch {
-      //     aiSummaryObject = data.aiSummary; // fallback if not valid JSON
-      //   }
-      // } else {
-      //   aiSummaryObject = data.aiSummary;
-      // }
-          console.log("Parsed aiSummary:", data.aiSummary);
-          console.log("Score:", data.aiSummary.score);
-          console.log("Skills:", data.aiSummary.skills);
-          console.log("Strengths:", data.aiSummary.strengths);
+      console.log("Parsed aiSummary:", data.aiSummary);
+      console.log("Score:", data.aiSummary.score);
+      console.log("Skills:", data.aiSummary.skills);
+      console.log("Strengths:", data.aiSummary.strengths);
 
       const newData = { ...alldata, aisummary: data.aiSummary, pdffile: data.pdffilebuffer };
       setAlldata(newData);
